@@ -1,0 +1,392 @@
+/* =================================================================
+   Nigmat Rahim — global stylesheet (EDITORIAL LUXURY revision)
+   Aesthetic: high-end magazine. Warm ivory paper, deep ink,
+   hairline rules, massive serif display, generous whitespace.
+   Color is rationed — a single editorial accent, no glow.
+   ================================================================= */
+
+:root {
+  /* ---- Paper (warm ivory, never pure white) ---- */
+  --paper: #fdfbf7;         /* primary background */
+  --paper-2: #f6f1e8;       /* raised surface / sidebar */
+  --paper-3: #efe8db;       /* inset / quote */
+  --paper-sunken: #f9f5ed;
+
+  /* ---- Ink (warm near-black, never pure black) ---- */
+  --ink: #1a1714;           /* primary text */
+  --ink-2: #3d362e;         /* body */
+  --ink-3: #6b6358;         /* secondary */
+  --ink-4: #9b9285;         /* meta / faint */
+  --rule: #d9d0c2;          /* hairline dividers */
+  --rule-soft: #e6dfd1;
+
+  /* ---- Editorial accent (singular, rationed) ---- */
+  --accent: #b8410e;        /* burnt sienna — the only color that pops */
+  --accent-deep: #8f3310;
+  --accent-soft: #e8d6c8;
+
+  /* ---- Functional tints (muted, magazine-ish) ---- */
+  --moss: #5a6b4f;          /* status: live / accepted */
+  --slate: #4a5568;         /* status: neutral */
+  --plum: #6b4a6e;          /* status: under review */
+
+  /* ---- Typography ---- */
+  --font-display: "Fraunces", "Tiempos", "Georgia", serif;
+  --font-body: "Newsreader", "Source Serif", Georgia, serif;
+  --font-sans: "Inter Tight", "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "SFMono-Regular", ui-monospace, monospace;
+
+  /* ---- Geometry ---- */
+  --maxw: 1240px;
+  --reading: 68ch;
+  --gut: clamp(1.5rem, 5vw, 4rem);
+  --radius-sm: 2px;
+  --radius: 3px;
+  --radius-lg: 6px;
+
+  /* ---- Motion — spring-like, never linear/ease-in-out ---- */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 7rem;
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background: var(--paper);
+  color: var(--ink-2);
+  font-size: clamp(17px, 1.05vw + 0.65rem, 19px);
+  line-height: 1.7;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+  font-feature-settings: "kern", "liga", "onum";
+}
+
+/* Fixed paper grain — physical paper feel, pointer-events none */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 200;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
+
+#root {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- Typography ---------- */
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  color: var(--ink);
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  margin: 0;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+}
+
+h1 {
+  font-size: clamp(3rem, 9vw, 7rem);
+  font-weight: 400;
+  letter-spacing: -0.035em;
+  line-height: 0.96;
+}
+
+h2 {
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1.02;
+}
+
+h3 {
+  font-size: clamp(1.3rem, 1.8vw, 1.75rem);
+  font-weight: 500;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule);
+  transition: border-color 0.4s var(--ease-spring), color 0.4s var(--ease-spring);
+}
+a:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 1px;
+  border-bottom-color: transparent;
+}
+
+strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--paper);
+}
+
+/* ---------- Layout helpers ---------- */
+.shell {
+  width: 100%;
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: var(--gut);
+}
+
+section {
+  position: relative;
+  padding-block: clamp(5rem, 11vw, 9rem);
+}
+
+/* Editorial eyebrow — microscopic, tracked */
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.eyebrow::before {
+  content: "";
+  width: 1.8rem;
+  height: 1px;
+  background: var(--ink-4);
+}
+.eyebrow .gr {
+  color: var(--ink-4);
+  font-style: italic;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 400;
+}
+
+.section-head {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-bottom: clamp(3rem, 6vw, 5rem);
+  max-width: 60ch;
+}
+.section-head h2 {
+  max-width: 18ch;
+}
+.section-head .lede {
+  color: var(--ink-3);
+  max-width: 56ch;
+  font-size: 1.12rem;
+  line-height: 1.6;
+  font-family: var(--font-body);
+  font-style: italic;
+}
+
+/* ---------- Mono utility ---------- */
+.mono {
+  font-family: var(--font-mono);
+}
+
+/* ---------- Reveal-on-scroll (blur-up + lift) ---------- */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+  filter: blur(6px);
+  transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out),
+    filter 0.9s var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform, filter;
+}
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+  filter: blur(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}
+
+/* ---------- Buttons — pill, button-in-button icon ---------- */
+.btn {
+  --btn-bg: var(--ink);
+  --btn-fg: var(--paper);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.55rem 0.55rem 0.55rem 1.4rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  cursor: pointer;
+  border-bottom: none;
+  transition: transform 0.5s var(--ease-spring), background 0.4s var(--ease-spring),
+    color 0.4s var(--ease-spring);
+  position: relative;
+}
+.btn:hover {
+  color: var(--btn-fg);
+  border-bottom-color: transparent;
+}
+.btn:active {
+  transform: scale(0.97);
+}
+/* nested circular arrow island */
+.btn__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: color-mix(in oklab, var(--btn-fg) 14%, transparent);
+  transition: transform 0.5s var(--ease-spring), background 0.4s var(--ease-spring);
+}
+.btn:hover .btn__icon {
+  transform: translate(2px, -1px) scale(1.06);
+}
+.btn--primary {
+  --btn-bg: var(--ink);
+  --btn-fg: var(--paper);
+}
+.btn--primary:hover {
+  --btn-bg: var(--accent);
+}
+.btn--ghost {
+  --btn-bg: transparent;
+  --btn-fg: var(--ink);
+  border-color: var(--rule);
+}
+.btn--ghost:hover {
+  --btn-bg: var(--ink);
+  --btn-fg: var(--paper);
+  border-color: var(--ink);
+}
+
+/* ---------- Status / role tags — flat editorial chips ---------- */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-sans);
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid var(--rule);
+  color: var(--ink-3);
+  background: transparent;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--rule);
+}
+.tag:hover {
+  color: var(--ink-3);
+}
+.tag .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.tag--moss { color: var(--moss); border-color: color-mix(in oklab, var(--moss) 40%, var(--rule)); }
+.tag--plum { color: var(--plum); border-color: color-mix(in oklab, var(--plum) 40%, var(--rule)); }
+.tag--slate { color: var(--slate); border-color: color-mix(in oklab, var(--slate) 40%, var(--rule)); }
+.tag--accent { color: var(--accent); border-color: color-mix(in oklab, var(--accent) 40%, var(--rule)); }
+/* aliases — map legacy fluorophore tones onto the editorial palette */
+.tag--gfp { color: var(--moss); border-color: color-mix(in oklab, var(--moss) 40%, var(--rule)); }
+.tag--cyan { color: var(--slate); border-color: color-mix(in oklab, var(--slate) 40%, var(--rule)); }
+.tag--violet { color: var(--plum); border-color: color-mix(in oklab, var(--plum) 40%, var(--rule)); }
+.tag--magenta { color: var(--accent); border-color: color-mix(in oklab, var(--accent) 40%, var(--rule)); }
+
+/* ---------- Hairline rule ---------- */
+.rule {
+  height: 1px;
+  background: var(--rule);
+  border: 0;
+  margin: 0;
+}
+
+/* ---------- Link with arrow (inline) ---------- */
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+  border-bottom: 1px solid var(--ink);
+  padding-bottom: 2px;
+}
+.link-arrow svg {
+  transition: transform 0.4s var(--ease-spring);
+}
+.link-arrow:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+.link-arrow:hover svg {
+  transform: translateX(4px);
+}
