@@ -27,14 +27,14 @@ export function Experience() {
               data-reveal
               style={{ ["--reveal-delay" as string]: `${i * 80}ms` }}
             >
-              <div className="tl-item__node" aria-hidden="true">
-                <span className="tl-item__dot" />
+              <div className="tl-item__meta">
+                <span className="tl-item__period">{L(e.period)}</span>
+                {e.tag && <span className="tl-item__tag">{L(e.tag)}</span>}
+              </div>
+              <div className="tl-item__rail" aria-hidden="true">
+                <span className="tl-item__node" />
               </div>
               <div className="tl-item__body">
-                <div className="tl-item__head">
-                  <span className="tl-item__period mono">{L(e.period)}</span>
-                  {e.tag && <span className="tag tag--cyan">{L(e.tag)}</span>}
-                </div>
                 <h3 className="tl-item__role">{L(e.role)}</h3>
                 <p className="tl-item__org">{L(e.org)}</p>
                 <ul className="tl-item__points">

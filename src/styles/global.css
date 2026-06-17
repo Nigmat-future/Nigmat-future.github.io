@@ -87,7 +87,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
-  font-feature-settings: "kern", "liga", "onum";
+  /* lining + tabular figures by default for clean stats/metrics;
+     body prose overrides to oldstyle figures where appropriate */
+  font-feature-settings: "kern", "liga", "lnum", "tnum";
+  text-wrap: pretty;
 }
 
 /* Fixed paper grain — physical paper feel, pointer-events none */
@@ -115,10 +118,11 @@ h4 {
   font-family: var(--font-display);
   color: var(--ink);
   font-weight: 500;
-  line-height: 1.02;
+  line-height: 1.04;
   letter-spacing: -0.025em;
   margin: 0;
   font-variation-settings: "opsz" 144, "SOFT" 30;
+  text-wrap: balance;
 }
 
 h1 {
@@ -165,6 +169,15 @@ button:focus-visible {
 strong {
   color: var(--ink);
   font-weight: 600;
+}
+
+/* Prose paragraphs: oldstyle figures read beautifully in serif body text */
+p,
+.rproj__summary,
+.rproj__bullets,
+.tl-item__points,
+.about__p {
+  font-feature-settings: "kern", "liga", "onum";
 }
 
 ::selection {
