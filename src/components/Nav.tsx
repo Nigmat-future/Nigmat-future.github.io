@@ -9,13 +9,21 @@ const SECTIONS = [
   { id: "publications", key: "nav.publications" },
   { id: "opensource", key: "nav.opensource" },
   { id: "experience", key: "nav.experience" },
-  { id: "contact", key: "nav.contact" },
 ];
 
 export function Nav() {
   const { t } = useI18n();
   const [active, setActive] = useState<string>("");
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  // two-state pill: compact + hairline at top, condensed + solid once scrolled
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 80);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   useEffect(() => {
     const ids = SECTIONS.map((s) => s.id);
@@ -44,7 +52,9 @@ export function Nav() {
   }, [open]);
 
   return (
-    <header className={`nav ${open ? "nav--open" : ""}`}>
+    <header
+      className={`nav ${open ? "nav--open" : ""} ${scrolled ? "nav--scrolled" : ""}`}
+    >
       <div className="nav__inner shell">
         <a href="#top" className="nav__brand" aria-label="Nigmat Rahim — home">
           <span className="nav__brand-mark" aria-hidden="true">N</span>
@@ -99,6 +109,13 @@ export function Nav() {
             {t(s.key)}
           </a>
         ))}
+        <a
+          href="#contact"
+          className="nav__mobile-link nav__mobile-link--cta"
+          onClick={() => setOpen(false)}
+        >
+          {t("nav.contact")}
+        </a>
       </div>
     </header>
   );
