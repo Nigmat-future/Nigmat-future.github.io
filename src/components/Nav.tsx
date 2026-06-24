@@ -11,6 +11,10 @@ const SECTIONS = [
   { id: "experience", key: "nav.experience" },
 ];
 
+const EXTERNAL = [
+  { href: "/advisor-insight.html", label: "Advisor Insight" },
+];
+
 export function Nav() {
   const { t } = useI18n();
   const [active, setActive] = useState<string>("");
@@ -74,6 +78,11 @@ export function Nav() {
               {t(s.key)}
             </a>
           ))}
+          {EXTERNAL.map((x) => (
+            <a key={x.href} href={x.href} className="nav__link">
+              {x.label}
+            </a>
+          ))}
         </nav>
 
         <div className="nav__actions">
@@ -107,6 +116,16 @@ export function Nav() {
             onClick={() => setOpen(false)}
           >
             {t(s.key)}
+          </a>
+        ))}
+        {EXTERNAL.map((x) => (
+          <a
+            key={x.href}
+            href={x.href}
+            className="nav__mobile-link"
+            onClick={() => setOpen(false)}
+          >
+            {x.label}
           </a>
         ))}
         <a

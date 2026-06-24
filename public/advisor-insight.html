@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Advisor Insight · 导师锐评 — Nigmat Rahim</title>
+<meta name="description" content="客观、全面、无偏倚的学术导师科研画像分析工具。基于 PubMed、基金数据库与合作网络的证据驱动评估体系。" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@144,400,30;144,500,30;144,600,30&family=Newsreader:opsz,ital@7..72,0;7..72,1&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono&display=swap" rel="stylesheet" />
+<style>
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+:root {
+  --paper: #fdfbf7;
+  --paper-2: #f6f1e8;
+  --ink: #1a1714;
+  --ink-2: #3d362e;
+  --ink-3: #6b6358;
+  --ink-4: #9b9285;
+  --rule: #d9d0c2;
+  --accent: #b8410e;
+  --accent-deep: #8f3310;
+  --accent-soft: #e8d6c8;
+  --moss: #5a6b4f;
+  --slate: #4a5568;
+  --plum: #6b4a6e;
+  --font-display: "Fraunces", "Tiempos", "Georgia", serif;
+  --font-body: "Newsreader", "Source Serif", Georgia, serif;
+  --font-sans: "Inter Tight", "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "SFMono-Regular", ui-monospace, monospace;
+  --maxw: 1240px;
+  --reading: 68ch;
+  --gut: clamp(1.5rem, 5vw, 4rem);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 6rem;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background: var(--paper);
+  color: var(--ink-2);
+  font-size: clamp(17px, 1.05vw + 0.65rem, 19px);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "kern", "liga", "lnum", "tnum";
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
+
+/* ---- Navigation ---- */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
+  padding: 0.8rem 0;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+}
+.nav__inner {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 var(--gut);
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+.nav__brand {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--ink);
+  text-decoration: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.nav__brand:hover { color: var(--accent); }
+.nav__brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.nav__links {
+  display: flex;
+  gap: 1.5rem;
+  margin-left: auto;
+}
+.nav__links a {
+  color: var(--ink-3);
+  text-decoration: none;
+  border: none;
+  transition: color 0.3s;
+}
+.nav__links a:hover { color: var(--accent); }
+.nav__links a.is-active { color: var(--ink); font-weight: 500; }
+
+/* ---- Layout ---- */
+.shell {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 var(--gut);
+}
+section {
+  padding-block: clamp(4rem, 8vw, 7rem);
+}
+
+/* ---- Typography ---- */
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  color: var(--ink);
+  font-weight: 500;
+  line-height: 1.04;
+  letter-spacing: -0.025em;
+  margin: 0;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  text-wrap: balance;
+}
+h1 {
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  font-weight: 400;
+  letter-spacing: -0.035em;
+  line-height: 0.96;
+}
+h2 {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  margin-bottom: 1.5rem;
+}
+h3 {
+  font-size: clamp(1.2rem, 1.6vw, 1.5rem);
+  margin-bottom: 0.8rem;
+  margin-top: 2rem;
+}
+h4 {
+  font-size: 1.1rem;
+  margin-bottom: 0.4rem;
+}
+
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+.eyebrow::before {
+  content: "";
+  width: 1.8rem;
+  height: 1px;
+  background: var(--ink-4);
+}
+
+.hero {
+  padding-block: clamp(3rem, 9vw, 6rem) clamp(2rem, 5vw, 4rem);
+}
+.hero .sub {
+  font-size: 1.1rem;
+  color: var(--ink-3);
+  max-width: 60ch;
+  margin-top: 1.2rem;
+  line-height: 1.6;
+}
+.hero .meta {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--ink-4);
+  margin-top: 1.5rem;
+}
+.meta strong { color: var(--ink-3); font-weight: 500; }
+
+/* ---- Content ---- */
+.content {
+  max-width: var(--reading);
+}
+.content p, .content li {
+  margin: 0 0 0.8rem 0;
+  max-width: 68ch;
+}
+.content ul, .content ol {
+  padding-left: 1.8rem;
+  margin: 0.8rem 0 1.4rem;
+}
+.content li { margin-bottom: 0.4rem; }
+.content li strong { color: var(--ink); }
+
+strong { color: var(--ink); font-weight: 600; }
+em { font-style: italic; }
+
+.content .tag {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--rule);
+  color: var(--ink-3);
+  margin-right: 0.3rem;
+  margin-bottom: 0.3rem;
+}
+
+a {
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule);
+  transition: border-color 0.4s var(--ease-spring), color 0.4s var(--ease-spring);
+}
+a:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+.link-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  border: none;
+  margin-top: 0.5rem;
+}
+.link-back:hover { color: var(--accent); }
+
+/* ---- Rule ---- */
+hr {
+  height: 1px;
+  background: var(--rule);
+  border: 0;
+  margin: 2.5rem 0;
+}
+
+/* ---- Table ---- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+  margin: 1.2rem 0 1.8rem;
+  font-family: var(--font-sans);
+}
+th, td {
+  text-align: left;
+  padding: 0.5rem 0.8rem;
+  border-bottom: 1px solid var(--rule-soft, #e6dfd1);
+  vertical-align: top;
+}
+th {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  border-bottom: 1px solid var(--rule);
+}
+
+/* ---- Methodology Cards ---- */
+.method-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+.method-card {
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 1.5rem;
+  background: var(--paper-2);
+}
+.method-card h4 {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 0.6rem;
+}
+.method-card p {
+  font-size: 0.92rem;
+  margin: 0;
+  color: var(--ink-2);
+}
+.method-card .num {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 400;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 0.3rem;
+}
+
+/* ---- Score table ---- */
+.score-row {
+  display: grid;
+  grid-template-columns: 1fr 2.5rem 2rem;
+  gap: 0.8rem;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--rule);
+  font-size: 0.92rem;
+}
+.score-row:last-child { border: none; }
+.score-row .dim { font-weight: 500; }
+.score-row .score {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  text-align: center;
+  color: var(--ink);
+}
+.score-row .weight {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--ink-4);
+  text-align: center;
+}
+
+/* ---- Guardrail list ---- */
+.guard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+  margin: 1.2rem 0;
+}
+@media (max-width: 700px) {
+  .guard-grid { grid-template-columns: 1fr; }
+}
+.guard-do, .guard-dont {
+  padding: 1rem 1.2rem;
+  border-radius: 6px;
+  font-size: 0.92rem;
+}
+.guard-do {
+  background: color-mix(in oklab, var(--moss) 10%, var(--paper));
+  border-left: 3px solid var(--moss);
+}
+.guard-dont {
+  background: color-mix(in oklab, var(--accent) 8%, var(--paper));
+  border-left: 3px solid var(--accent);
+}
+.guard-label {
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.guard-do .guard-label { color: var(--moss); }
+.guard-dont .guard-label { color: var(--accent); }
+
+/* ---- Call to Action ---- */
+.cta-box {
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 2rem 2.5rem;
+  margin: 2.5rem 0;
+  background: var(--paper-2);
+  text-align: center;
+}
+.cta-box h3 {
+  margin-top: 0;
+}
+.cta-box p {
+  max-width: 50ch;
+  margin: 0 auto 1.2rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.55rem 0.55rem 0.55rem 1.4rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: var(--ink);
+  color: var(--paper);
+  cursor: pointer;
+  text-decoration: none;
+  border: none;
+  transition: background 0.4s var(--ease-spring);
+}
+.btn:hover {
+  background: var(--accent);
+  color: var(--paper);
+  border: none;
+}
+.btn__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: color-mix(in oklab, #fff 14%, transparent);
+  transition: transform 0.5s var(--ease-spring);
+}
+.btn:hover .btn__icon {
+  transform: translate(2px, -1px) scale(1.06);
+}
+
+/* ---- Code block ---- */
+pre {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 1rem 1.2rem;
+  overflow-x: auto;
+  line-height: 1.5;
+  margin: 1rem 0;
+}
+code {
+  font-family: var(--font-mono);
+  font-size: 0.82em;
+}
+
+/* ---- Footer ---- */
+footer {
+  padding: 2rem 0;
+  border-top: 1px solid var(--rule);
+  font-family: var(--font-sans);
+  font-size: 0.76rem;
+  color: var(--ink-4);
+  text-align: center;
+}
+footer a { color: var(--ink-3); border: none; }
+
+/* ---- Responsive ---- */
+@media (max-width: 600px) {
+  .nav__links { display: none; }
+  .method-grid { grid-template-columns: 1fr; }
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--paper);
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<header class="nav">
+  <div class="nav__inner">
+    <a href="/" class="nav__brand">
+      <span class="nav__brand-mark" aria-hidden="true">N</span>
+      <span>Nigmat Rahim</span>
+    </a>
+    <nav class="nav__links" aria-label="Primary">
+      <a href="/">Home</a>
+      <a href="/#research">Research</a>
+      <a href="/#opensource">Open Source</a>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="shell">
+    <p class="eyebrow">Praxis · The Toolkit</p>
+    <h1>Advisor Insight<br><span style="font-size: 0.65em; letter-spacing: 0.02em;">导师锐评</span></h1>
+    <p class="sub">
+      An evidence-driven framework for evaluating academic advisors before you commit 
+      years of your career to their group. Powered by PubMed, grant databases, 
+      and co-author network analysis — not institutional branding or reputation.
+    </p>
+    <p class="meta">
+      <strong>Skill</strong> · Hermes Agent · v1.0.0 · 
+      by <a href="https://github.com/Nigmat-future" target="_blank">Nigmat Rahim</a>
+    </p>
+  </div>
+</section>
+
+<!-- Why -->
+<section>
+  <div class="shell content">
+    <h2>Why this exists</h2>
+    <p>
+      Every year, thousands of students pick PhD advisors based on reputation, 
+      institutional prestige, or a single impressive paper — only to discover 
+      years later that the person they chose is not an independent researcher, 
+      has no coherent research program, or cannot support their students' careers.
+    </p>
+    <p>
+      University websites and news articles will always paint the rosiest picture. 
+      This tool cuts through that noise by asking a single question: 
+      <strong>what does the publicly verifiable data say?</strong>
+    </p>
+  </div>
+</section>
+
+<!-- The Workflow -->
+<section style="padding-top: 0;">
+  <div class="shell content">
+    <h2>The evaluation framework</h2>
+    <p>
+      The analysis proceeds through five sequential phases — each building on the 
+      evidence gathered in the previous one. The entire process is 
+      <strong>data-driven, traceable, and bias-resistant</strong>.
+    </p>
+
+    <div class="method-grid">
+      <div class="method-card">
+        <div class="num">0</div>
+        <h4>Disambiguation</h4>
+        <p>Identify the correct person through name+institution+department+ORCID cross-referencing. Never confuse two people with the same name.</p>
+      </div>
+      <div class="method-card">
+        <div class="num">1</div>
+        <h4>Publication Audit</h4>
+        <p>Every paper classified by author role (first, last, middle). Independence ratio calculated. Journal quality distribution mapped.</p>
+      </div>
+      <div class="method-card">
+        <div class="num">2</div>
+        <h4>Funding Analysis</h4>
+        <p>Grant IDs extracted from PubMed acknowledgments. Each grant attributed to its actual holder — not everyone who listed it.</p>
+      </div>
+      <div class="method-card">
+        <div class="num">3</div>
+        <h4>Power Structure</h4>
+        <p>Co-author network reveals who the real boss is, who the peers are, and whether the target has their own group or is a permanent team member.</p>
+      </div>
+      <div class="method-card">
+        <div class="num">4</div>
+        <h4>Trajectory</h4>
+        <p>Career timeline reconstructed from publication history. Is this person moving toward or away from independence?</p>
+      </div>
+      <div class="method-card">
+        <div class="num">5</div>
+        <h4>Synthesis</h4>
+        <p>7-dimensional scoring (0-10) with weighted overall. Clear bottom line: who this person really is as a researcher.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Core Metrics -->
+<section style="padding-top: 0;">
+  <div class="shell content">
+    <h2>What we measure</h2>
+
+    <h3>Independence Ratio</h3>
+    <p>The single most informative metric. Calculated as weighted sum of first-author and corresponding-author papers divided by total papers:</p>
+    <pre>Independence = (1.0 × First + 0.7 × CoFirst + 1.0 × LastCorr + 0.5 × CoCorr) / Total</pre>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Ratio</th>
+          <th>Meaning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>&gt; 0.30</td><td>Credible independent researcher with own program</td></tr>
+        <tr><td>0.15 – 0.30</td><td>Developing independence; transitioning toward PI status</td></tr>
+        <tr><td>&lt; 0.15</td><td>Strong team dependence; likely not an independent PI</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Scoring Dimensions</h3>
+    <div class="score-row">
+      <span class="dim">Research Independence</span><span class="score">0–10</span><span class="weight">25%</span>
+    </div>
+    <div class="score-row">
+      <span class="dim">Research Depth</span><span class="score">0–10</span><span class="weight">20%</span>
+    </div>
+    <div class="score-row">
+      <span class="dim">Funding Competitiveness</span><span class="score">0–10</span><span class="weight">15%</span>
+    </div>
+    <div class="score-row">
+      <span class="dim">Publication Quality</span><span class="score">0–10</span><span class="weight">15%</span>
+    </div>
+    <div class="score-row">
+      <span class="dim">Career Trajectory</span><span class="score">0–10</span><span class="weight">10%</span>
+    </div>
+    <div class="score-row">
+      <span class="dim">Mentorship Capacity</span><span class="score">0–10</span><span class="weight">10%</span>
+    </div>
+    <div class="score-row">
+      <span class="dim">Collaboration Breadth</span><span class="score">0–10</span><span class="weight">5%</span>
+    </div>
+
+    <hr />
+
+    <h3>Grant Portfolio — NSFC Types</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Grant ID Prefix</th>
+          <th>Type</th>
+          <th>Amount</th>
+          <th>PI Significance</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>8xxxxxx</td><td>Youth Project (青年)</td><td>~¥210,000</td><td>Entry-level, expected of all early-career</td></tr>
+        <tr><td>3xxxxxx</td><td>General Program (面上)</td><td>~¥550,000</td><td><strong>Minimum threshold for independent PI</strong></td></tr>
+        <tr><td>2xxxxxx</td><td>Excellent Young Scientists (优青)</td><td>~¥2,000,000</td><td>Highly competitive, marks elite track</td></tr>
+        <tr><td>7xxxxxx</td><td>Key Program (重点)</td><td>~¥3,000,000+</td><td>Established senior PI with national recognition</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Truth & Bias Guardrails -->
+<section style="padding-top: 0;">
+  <div class="shell content">
+    <h2>Truth &amp; bias guardrails</h2>
+    <p>This framework is designed to be maximally objective. Its guardrails are not optional:</p>
+
+    <div class="guard-grid">
+      <div class="guard-do">
+        <div class="guard-label">✓ Always does</div>
+        <ul style="margin: 0; padding-left: 1.2rem;">
+          <li>Uses only publicly verifiable data</li>
+          <li>States confidence levels explicitly</li>
+          <li>Distinguishes correlation from causation</li>
+          <li>Reports conflicting evidence when sources disagree</li>
+          <li>Prefaces every judgment with supporting data</li>
+        </ul>
+      </div>
+      <div class="guard-dont">
+        <div class="guard-label">✗ Never does</div>
+        <ul style="margin: 0; padding-left: 1.2rem;">
+          <li>No personality judgments or character assessments</li>
+          <li>No rumor, hearsay, or third-party claims</li>
+          <li>No institutional prestige bias</li>
+          <li>No "potential" claims — evaluates what exists</li>
+          <li>Never assumes malice or laziness</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Disambiguation rule</h3>
+    <p>
+      Chinese names (张伟, 王磊, 刘洋) routinely map to 50+ published researchers. 
+      If multiple people share the target's name at different institutions and we 
+      cannot confirm the identity with certainty, the analysis <strong>stops</strong> 
+      and presents all candidates with evidence. The user must confirm before proceeding.
+    </p>
+
+    <h3>Disclosure</h3>
+    <p>
+      All data is from publicly available sources (PubMed, NCBI E-utilities, 
+      institutional websites). This analysis is an <strong>evidence-based assessment 
+      of research metrics</strong>, not a personal evaluation. The subject has 
+      not been contacted or notified.
+    </p>
+  </div>
+</section>
+
+<!-- Real Example -->
+<section style="padding-top: 0;">
+  <div class="shell content">
+    <h2>Real-world example</h2>
+    <p>
+      This methodology was applied to evaluate <strong>张伟龙 (Zhang Weilong)</strong>, 
+      a clinical attending at Peking University Third Hospital Department of Hematology. 
+      The analysis revealed:
+    </p>
+    <ul>
+      <li>54 total papers, but only <strong>1 first-author paper</strong> (1.8%)</li>
+      <li><strong>Independence Ratio: 0.07</strong> — well below the 0.15 threshold</li>
+      <li>His boss (景红梅) appeared in <strong>40 of 54 papers</strong> as last author</li>
+      <li>Only a NSFC Youth Project (¥210k) + institutional grants — <strong>no General Program</strong></li>
+      <li>Career plateaued at 主治医师 level — no progression to associate professor</li>
+    </ul>
+    <p>
+      The bottom line: a platform-dependent "clinical-academic contractor" rather 
+      than an independent PI — exactly the kind of insight that helps students 
+      make informed decisions.
+    </p>
+  </div>
+</section>
+
+<!-- Call to Action -->
+<section style="padding-top: 0;">
+  <div class="shell">
+    <div class="cta-box">
+      <h3>Ready to evaluate an advisor?</h3>
+      <p>
+        This tool is available as a Hermes Agent skill. Load it and follow the 
+        guided workflow. Or reach out if you want a custom analysis.
+      </p>
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="https://github.com/Nigmat-future/hermes-agent-skills" target="_blank" class="btn" style="text-decoration: none;">
+          Load the skill
+          <span class="btn__icon" aria-hidden="true">
+            <svg width="11" height="11" viewBox="0 0 14 14" fill="none">
+              <path d="M3 11L11 3M11 3H5M11 3v6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </span>
+        </a>
+        <a href="mailto:nigmatrahim@stu.pku.edu.cn?subject=Advisor%20Insight%20Analysis%20Request" class="btn" style="text-decoration: none; background: transparent; border: 1px solid var(--ink); color: var(--ink);">
+          Request analysis
+          <span class="btn__icon" aria-hidden="true" style="background: color-mix(in oklab, var(--ink) 14%, transparent);">
+            <svg width="11" height="11" viewBox="0 0 14 14" fill="none">
+              <path d="M3 11L11 3M11 3H5M11 3v6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="shell">
+    <p>
+      <a href="https://nigmat-future.github.io">Nigmat Rahim</a> · 
+      Biomedical AI · Peking University · 
+      <a href="mailto:nigmatrahim@stu.pku.edu.cn">nigmatrahim@stu.pku.edu.cn</a>
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
